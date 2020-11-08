@@ -1,0 +1,20 @@
+function CLEAN(floor, startRow, startCol):
+    goRight = Tru
+    i = startRow, j = startCol
+
+    while the floor is not clean:
+        currentTile = floor[i][j]
+
+        if currentTile is dirty, clean it
+
+        choose next cell to move to:
+            if in last column and goRight
+                go down 
+                toggle goRight 
+            else if in first column and not goRight
+                go down 
+                toggle goRight          
+            else
+                go right if goRight else go left
+
+        move to next cell (update coordinates)
