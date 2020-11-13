@@ -1,0 +1,115 @@
+import random
+
+board=[['_','_','_'],['_','_','_'],['_','_','_']]
+count=0
+c1,c2=1,2
+
+def random_choose():
+    x = random.randint(0,2)
+    y = random.randint(0,2)
+    if(board[x][y]=='_'):
+        return x,y;
+    else:
+        random_choose()
+
+def display_board():
+    for i in range(0,3):
+        for j in range(0,3):
+            print(board[i][j],end='   ')
+        print("\n")
+    print("\n")
+
+def chk_won_zone(per):
+    for i in range(0,3):
+        if(board[i][0]==per and board[i][1]==per and board[i][2]==per):
+            return 1;
+    for j in range(0,3):
+        if(board[0][j]==per and board[1][j]==per and board[2][j]==per):
+            return 1;
+    if(board[0][0]==per and board[1][1]==per and board[2][2]==per):
+            return 1;
+    if(board[0][2]==per and board[1][1]==per and board[2][0]==per):
+            return 1;
+    return 0;
+
+def chk_win_zone(per):
+    for i in range(0,3):
+        if(board[i][0]==per and board[i][1]==per and board[i][2]=='_'):
+            return 1,i,2;
+        if(board[i][0]==per and board[i][1]=='_' and board[i][2]==per):
+            return 1,i,1;
+        if(board[i][0]=='_' and board[i][1]==per and board[i][2]==per):
+            return 1,i,0;
+    for j in range(0,3):
+        if(board[0][j]==per and board[1][j]==per and board[2][j]=='_'):
+            return 1,2,j;
+        if(board[0][j]==per and board[1][j]=='_' and board[2][j]==per):
+            return 1,1,j;
+        if(board[0][j]=='_' and board[1][j]==per and board[2][j]==per):
+            return 1,0,j;
+    #diagonal 1
+    if(board[0][0]=='_' and board[1][1]==per and board[2][2]==per):
+            return 1,0,0;
+    if(board[0][0]==per and board[1][1]=='_' and board[2][2]==per):
+            return 1,1,1;
+    if(board[0][0]==per and board[1][1]==per and board[2][2]=='_'):
+            return 1,2,2;
+    #diagonal 2
+    if(board[0][2]=='_' and board[1][1]==per and board[2][0]==per):
+            return 1,0,2;
+    if(board[0][2]==per and board[1][1]=='_' and board[2][0]==per):
+            return 1,1,1;
+    if(board[0][2]==per and board[1][1]==per and board[2][0]=='_'):
+            return 1,2,0;
+    return 0,-1,-1
+       
+def comp_turn(c):
+ 
+ global count
+ if(c==1):
+     opp=c2
+ else:
+     opp=c1
+ if(count<9):
+    count+=1
+    res=-1
+    res,row,col=chk_win_zone(c)
+    if(res==1):
+        board[row][col]=c
+        if(chk_won_zone(c)==1):
+            display_board()
+            if(c==c1):
+                print("Oho! Computer1 won...")
+            else:
+                print("Oho! Computer2 won...")
+            return
+    elif(res==0):
+        res1,row,col=chk_win_zone(opp)
+        if(res1==1):
+            board[row][col]=c
+            display_board()
+            
+        else:
+            i,j = random_choose()
+            board[i][j]=c       
+            display_board()
+            
+    if(count==9):
+            print("And it's a draw!,NO WIN NO LOSS")
+            return 
+    else:
+        comp_turn(opp)
+        
+
+        
+def main():
+    global c1
+    global c2
+    display_board()
+    p=int(input('Enter 1 to make Computer1 play as first player or 2 to make Computer2 play as first player: '))
+    if(p==1):
+        comp_turn(c1)
+    else:
+        comp_turn(c2)
+   
+main()
